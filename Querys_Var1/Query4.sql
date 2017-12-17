@@ -23,3 +23,26 @@ HAVING MAX(CountRentCar) > = (
 										FROM CountRentCarsOffice_CTE
 									) K
 							 )
+							 
+							 
+--this query faster then first
+----------------------------------------------------------
+WITH CountRentCarsOffice_CTE (RecN, CountRentCar, Dohod, CountRentContract) 
+AS	(
+		SELECT O.RecN, COUNT(DISTINCT C.CarN) AS CountRentCar, SUM((C.DailyPay*Con.PlanDays)+(C.DailyPay*Con.OverDays)+(Con.OverDays*Con.Fine)) as Dohod, COUNT(Con.ArN) as CountRentContract
+		FROM Office O
+		JOIN Contract Con ON O.RecN =  Con.GetRecN 
+		JOIN Car C ON Con.CarN = C.CarN
+		GROUP BY O.RecN
+	)
+
+SELECT MAX(CountRentCar) CountRentCar, CCTE.RecN, Dohod, CCTE.CountRentContract
+FROM CountRentCarsOffice_CTE CCTE
+GROUP BY CCTE.RecN, Dohod, CCTE.CountRentContract
+HAVING MAX(CountRentCar) > = (
+								SELECT MAX(CountRentCar)
+								FROM(	
+										SELECT *
+										FROM CountRentCarsOffice_CTE
+									) K
+							 )
