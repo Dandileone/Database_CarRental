@@ -1,0 +1,7 @@
+	SELECT T.ArN, C.CarN allCar
+	FROM Tenant T
+	CROSS JOIN Car C
+EXCEPT
+	SELECT C.ArN, C.CarN
+	FROM Contract C 
+ORDER BY T.ArN, C.CarN
