@@ -16,9 +16,9 @@ JOIN	(
 ON Car.CarN = C.CarN
 
 --faster then first query
-SELECT Car.*, Contract.GetData
+SELECT Distinct Car.*, Contract.GetData
 FROM Car 
-LEFT JOIN Contract ON Contract.CarN = Car.CarN 
+JOIN Contract ON Contract.CarN = Car.CarN 
 LEFT JOIN	( 
 				SELECT CarN, GetData FROM [Contract] 
 				WHERE YEAR(GetData) = YEAR(GETDATE()) 
