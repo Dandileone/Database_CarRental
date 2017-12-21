@@ -1,6 +1,6 @@
 SELECT 
 	Car.RegNum, Car.Model, 
-	SUM((Car.DailyPay*Con.PlanDays)+(Car.DailyPay*Con.OverDays)+(Con.OverDays*Con.Fine)) as Dohod ,
+	SUM(DISTINCT(Car.DailyPay*Con.PlanDays)+(Car.DailyPay*Con.OverDays)+(Con.OverDays*Con.Fine)) as Dohod ,
 	AVG(Con.PlanDays + Con.OverDays) AS Col, AVG(SUMM) 
 FROM Car
 JOIN Contract AS Con ON Con.CarN = Car.CarN
